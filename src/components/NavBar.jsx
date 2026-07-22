@@ -16,8 +16,15 @@ function NavBar() {
     <nav className="site-nav">
       <div className="wrap">
         <Link to="/" className="brand">
-          jo<span>@</span>projects
+          ~/<span>joseph-solis</span>
         </Link>
+
+        <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+          <li><NavLink to="/" className={linkClass} end onClick={() => setMenuOpen(false)}>Home</NavLink></li>
+          <li><NavLink to="/projects" className={linkClass} onClick={() => setMenuOpen(false)}>Projects</NavLink></li>
+          <li><NavLink to="/timeline" className={linkClass} onClick={() => setMenuOpen(false)}>Timeline</NavLink></li>
+          <li><NavLink to="/about" className={linkClass} onClick={() => setMenuOpen(false)}>About Me</NavLink></li>
+        </ul>
 
         <button
           className="nav-toggle"
@@ -27,13 +34,6 @@ function NavBar() {
         >
           Menu
         </button>
-
-        <ul className={`nav-links${menuOpen ? " open" : ""}`}>
-          <li><NavLink to="/" className={linkClass} end>Home</NavLink></li>
-          <li><NavLink to="/projects" className={linkClass}>Projects</NavLink></li>
-          <li><NavLink to="/archive" className={linkClass}>Archive</NavLink></li>
-          <li><NavLink to="/contact" className={linkClass}>Contact</NavLink></li>
-        </ul>
       </div>
     </nav>
   );

@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { svgPlaceholder } from "../utils/placeholder.js";
 
+// Supports three item shapes:
+//   { type: "image", seed, caption }        - generated placeholder image
+//   { type: "image", src, caption }         - real image, once you have one
+//   { type: "video", src, caption }         - real video file/URL
 function Gallery({ label, items }) {
   const [openSrc, setOpenSrc] = useState(null);
   const [openAlt, setOpenAlt] = useState("");
 
   if (!items || items.length === 0) return null;
 
-  function openLightbox(seed, caption) {
-    setOpenSrc(svgPlaceholder(seed, label, 1600, 900));
-    setOpenAlt(caption);
+  function openLightbox(item) {
+    if (item.type === "video") return; // videos play inline, no lightbox
+    setOpenSrc(item.src || svgPlaceholder(item.seed, label, 1600, 900));
+    setOpenAlt(item.caption);
   }
 
   function closeLightbox() {
@@ -18,16 +23,19 @@ function Gallery({ label, items }) {
 
   return (
     <>
-      <h2 style={{ marginTop: "2em" }}>Gallery</h2>
       <div className="gallery-grid">
-        {items.map((item) => (
-          <figure className="gallery-item" key={item.seed}>
-            <img
-              src={svgPlaceholder(item.seed, label)}
-              alt={item.caption}
-              loading="lazy"
-              onClick={() => openLightbox(item.seed, item.caption)}
-            />
+        {items.map((item, i) => (
+          <figure className="gallery-item" key={item.seed || item.src || i}>
+            {item.type === "video" ? (
+              <video src={item.src} controls preload="metadata" />
+            ) : (
+              <img
+                src={item.src || svgPlaceholder(item.seed, label)}
+                alt={item.caption}
+                loading="lazy"
+                onClick={() => openLightbox(item)}
+              />
+            )}
             <figcaption>{item.caption}</figcaption>
           </figure>
         ))}

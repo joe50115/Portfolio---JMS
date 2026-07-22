@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { PROJECTS } from "../data/projects.js";
+import { PROJECTS } from "../data/projects/index.js";
 import { ALL_STATUSES, statusLabel } from "../utils/status.js";
+import { useScrollReveal } from "../hooks/useScrollReveal.js";
 import ProjectCard from "../components/ProjectCard.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import FilterGroup from "../components/FilterGroup.jsx";
@@ -9,6 +10,7 @@ function ArchiveScreen() {
   const [query, setQuery] = useState("");
   const [statuses, setStatuses] = useState(new Set());
   const [tags, setTags] = useState(new Set());
+  const revealRef = useScrollReveal();
 
   const allTags = useMemo(
     () => Array.from(new Set(PROJECTS.flatMap((p) => p.tags))).sort(),
@@ -43,7 +45,7 @@ function ArchiveScreen() {
     if (statuses.size && !statuses.has(p.status)) return false;
     if (tags.size && !p.tags.some((t) => tags.has(t))) return false;
     if (query) {
-      const haystack = `${p.title} ${p.summary} ${p.tags.join(" ")}`.toLowerCase();
+      const haystack = `${p.title} ${p.shortDescription} ${p.tags.join(" ")} ${p.technologies.join(" ")}`.toLowerCase();
       if (!haystack.includes(query.trim().toLowerCase())) return false;
     }
     return true;
@@ -62,7 +64,7 @@ function ArchiveScreen() {
         </div>
       </header>
 
-      <section>
+      <section ref={revealRef} className="reveal">
         <div className="wrap">
           <div className="archive-controls">
             <SearchBar value={query} onChange={setQuery} />

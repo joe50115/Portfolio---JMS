@@ -50,10 +50,12 @@ export function renderMarkdown(md) {
   src = src.replace(/^- \[x\] (.*)$/gim, '<li class="done">$1</li>');
   src = src.replace(/^- \[ \] (.*)$/gm, '<li class="todo">$1</li>');
 
-  // Bold, italic, inline code, links
+  // Bold, italic, inline code, images, links (images must run before links —
+  // both share the `[label](target)` shape, images just have a leading `!`)
   src = src.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   src = src.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, "<em>$1</em>");
   src = src.replace(/`([^`]+)`/g, "<code>$1</code>");
+  src = src.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" loading="lazy">');
   src = src.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 
   // Blockquotes

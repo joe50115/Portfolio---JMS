@@ -1,29 +1,60 @@
 import { Link } from "react-router-dom";
-import { PROJECTS } from "../data/projects.js";
+import { PROJECTS } from "../data/projects/index.js";
+import { profile } from "../data/profile.js";
+import { getStatusCounts, getCurrentFocus, getLastUpdatedProject } from "../utils/dashboard.js";
+import { useScrollReveal } from "../hooks/useScrollReveal.js";
+import ProfileAvatar from "../components/ProfileAvatar.jsx";
+import SocialLinks from "../components/SocialLinks.jsx";
+import DashboardStats from "../components/DashboardStats.jsx";
 import ProjectCard from "../components/ProjectCard.jsx";
+import AudioVisualizer from "../components/AudioVisualizer.jsx";
 
 function HomeScreen() {
   const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
+  const counts = getStatusCounts(PROJECTS);
+  const currentFocus = getCurrentFocus(PROJECTS);
+  const lastUpdated = getLastUpdatedProject(PROJECTS);
+
+  const dashboardRef = useScrollReveal();
+  const buildingRef = useScrollReveal();
 
   return (
     <>
-      <header className="hero">
-        <div className="wrap">
-          <span className="eyebrow">CS / EE — Embedded systems, homelab, game dev</span>
-          <h1>Systems, from silicon to server rack.</h1>
-          <p className="lede">
-            I build things at every layer — firmware on bare microcontrollers, self-hosted
-            services on a homelab NAS, and 2D games in Godot. This site tracks what's
-            shipped, what's in progress, and what's still on the roadmap.
-          </p>
-          <div className="cta-row">
-            <Link to="/projects" className="btn primary">View projects</Link>
-            <Link to="/archive" className="btn">Browse the archive</Link>
+      {/* ---------------------------- Hero ---------------------------- */}
+      <header className="hero profile-hero">
+        <div className="wrap profile-hero-layout">
+          <ProfileAvatar label={profile.avatarLabel} />
+          <div>
+            <span className="eyebrow">{profile.role}</span>
+            <h1>{profile.name}</h1>
+            <p className="tagline">{profile.tagline}</p>
+            {profile.about.map((paragraph, i) => (
+              <p key={i} className="lede">{paragraph}</p>
+            ))}
+            <div className="cta-row">
+              <Link className="btn primary" to="/projects">View Projects</Link>
+              <Link className="btn" to="/about#contact">Contact Me</Link>
+            </div>
+            <SocialLinks links={profile.links} />
           </div>
         </div>
       </header>
 
-      <section>
+      <AudioVisualizer />
+
+      {/* ------------------------------ Dashboard ------------------------------ */}
+      <section ref={dashboardRef} className="reveal">
+        <div className="wrap">
+          <div className="section-head">
+            <h2>Engineering Dashboard</h2>
+            <Link to="/timeline" className="see-all">See full timeline →</Link>
+          </div>
+          <DashboardStats counts={counts} currentFocus={currentFocus} lastUpdated={lastUpdated} />
+        </div>
+      </section>
+
+      {/* --------------------------- Currently building --------------------------- */}
+      <section ref={buildingRef} className="reveal">
         <div className="wrap">
           <div className="section-head">
             <h2>Currently building</h2>
