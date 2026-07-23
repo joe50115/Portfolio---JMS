@@ -7,7 +7,7 @@ function Footer() {
       <div className="wrap footer-grid">
         <div className="footer-col">
           <span>© {new Date().getFullYear()} {profile.name}</span>
-          <span>Built with React + Vite.</span>
+          <span>Built with React + Vite and Claude Code.</span>
         </div>
 
         <div className="footer-col footer-links">

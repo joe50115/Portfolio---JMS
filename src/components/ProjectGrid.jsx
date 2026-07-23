@@ -2,8 +2,7 @@ import ProjectCard from "./ProjectCard.jsx";
 import { useScrollReveal } from "../hooks/useScrollReveal.js";
 
 // Shared "section of project cards, or an empty state" block used by the
-// In Progress / Future Ideas / Completed groups on the Projects page, so
-// the grid/empty-state markup only lives in one place.
+// Projects page, so the grid/empty-state markup only lives in one place.
 function ProjectGrid({ id, title, description, projects }) {
   const revealRef = useScrollReveal();
 

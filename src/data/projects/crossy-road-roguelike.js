@@ -1,12 +1,12 @@
 /* ==========================================================================
-   FUTURE IDEA — not started yet.
+   CONCEPT — not started yet.
    ========================================================================== */
 
 export const project = {
   slug: "crossy-road-roguelike",
   title: "Crossy Road Roguelike",
   label: "CROSSY",
-  status: "planned",
+  status: "concept",
   featured: false,
 
   shortDescription:
@@ -20,7 +20,7 @@ export const project = {
   timeInvested: null,
   repoLink: "",
   liveDemoLink: null,
-  updatedAt: "2026-07-10",
+  updatedAt: "2026-07-22",
 
   goal:
     "Combine Crossy Road's lane-based movement with roguelike run-based progression and bullet hell-style enemy patterns.",
@@ -31,5 +31,11 @@ export const project = {
 
     background:
       "Wanted to combine the instantly-readable movement of Crossy Road with genres I enjoy more for replayability — roguelike progression and bullet hell pattern-dodging.",
+
+    roadmap: [
+      "Lane-based movement prototype",
+      "Roguelike run-based progression/upgrades",
+      "Bullet hell enemy attack patterns",
+    ],
   },
 };

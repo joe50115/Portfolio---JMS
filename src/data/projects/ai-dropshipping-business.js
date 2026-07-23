@@ -1,12 +1,12 @@
 /* ==========================================================================
-   FUTURE IDEA — not started yet.
+   CONCEPT — not started yet.
    ========================================================================== */
 
 export const project = {
   slug: "ai-dropshipping-business",
   title: "AI Dropshipping Business",
   label: "DROP",
-  status: "planned",
+  status: "concept",
   featured: false,
 
   shortDescription:
@@ -20,7 +20,7 @@ export const project = {
   timeInvested: null,
   repoLink: "",
   liveDemoLink: null,
-  updatedAt: "2026-07-10",
+  updatedAt: "2026-07-22",
 
   goal:
     "Use AI tooling to find and validate niche product ideas, then run a lean ecommerce dropshipping operation around them.",
@@ -31,5 +31,11 @@ export const project = {
 
     background:
       "Interested in the intersection of AI tooling and entrepreneurship — using AI to shortcut the research and content-generation grind that normally makes testing multiple product niches slow.",
+
+    roadmap: [
+      "AI-driven niche/product research tooling",
+      "Automated marketing copy generation",
+      "Lean dropshipping fulfillment pilot",
+    ],
   },
 };

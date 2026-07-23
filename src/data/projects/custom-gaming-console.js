@@ -1,12 +1,12 @@
 /* ==========================================================================
-   FUTURE IDEA — not started yet.
+   CONCEPT — not started yet.
    ========================================================================== */
 
 export const project = {
   slug: "custom-gaming-console",
   title: "Custom Living Room Gaming Console",
   label: "CONSL",
-  status: "planned",
+  status: "concept",
   featured: false,
 
   shortDescription:
@@ -20,7 +20,7 @@ export const project = {
   timeInvested: null,
   repoLink: "",
   liveDemoLink: null,
-  updatedAt: "2026-07-10",
+  updatedAt: "2026-07-22",
 
   goal:
     "Build a Linux gaming PC that feels and operates like a living-room console, while keeping full ownership of games — DRM-free libraries, local storage, and physical media instead of a locked-down platform.",
@@ -31,5 +31,12 @@ export const project = {
 
     background:
       "Wanted console-style convenience (turn it on, pick up a controller, play) without giving up the ownership and control that comes with a PC you fully manage yourself.",
+
+    roadmap: [
+      "Pick a Linux distro and console-mode UI/launcher",
+      "Assemble the custom PC hardware",
+      "Console-style boot flow (turn on, controller, play)",
+      "Physical media support",
+    ],
   },
 };

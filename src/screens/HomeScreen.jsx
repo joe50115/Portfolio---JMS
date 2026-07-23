@@ -10,7 +10,7 @@ import ProjectCard from "../components/ProjectCard.jsx";
 import AudioVisualizer from "../components/AudioVisualizer.jsx";
 
 function HomeScreen() {
-  const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
+  const inProgress = PROJECTS.filter((p) => p.status === "active-development").slice(0, 3);
   const counts = getStatusCounts(PROJECTS);
   const currentFocus = getCurrentFocus(PROJECTS);
   const lastUpdated = getLastUpdatedProject(PROJECTS);
@@ -47,7 +47,6 @@ function HomeScreen() {
         <div className="wrap">
           <div className="section-head">
             <h2>Engineering Dashboard</h2>
-            <Link to="/timeline" className="see-all">See full timeline →</Link>
           </div>
           <DashboardStats counts={counts} currentFocus={currentFocus} lastUpdated={lastUpdated} />
         </div>
@@ -61,7 +60,7 @@ function HomeScreen() {
             <Link to="/archive" className="see-all">See all →</Link>
           </div>
           <div className="grid">
-            {featured.map((project) => (
+            {inProgress.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}
           </div>

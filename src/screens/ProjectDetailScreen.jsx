@@ -10,9 +10,10 @@ import Gallery from "../components/Gallery.jsx";
 import DetailSection from "../components/DetailSection.jsx";
 
 // Every field/section below is optional except slug/title/status — see
-// data/projects/example-*.js for what a fully filled-out project looks
-// like versus a bare-bones planned one. DetailSection skips anything
-// that's empty, so this template scales down gracefully.
+// data/projects/hydroponic-sensor-regulator.js (active/research-stage) vs.
+// privacy-phone.js (concept-stage) for what a fully filled-out project looks
+// like versus a bare-bones one. DetailSection skips anything that's empty,
+// so this template scales down gracefully.
 function ProjectDetailScreen() {
   const { slug } = useParams();
   const index = PROJECTS.findIndex((p) => p.slug === slug);
@@ -37,7 +38,7 @@ function ProjectDetailScreen() {
     );
   }
 
-  const cover = svgPlaceholder(project.slug, project.label, 1200, 500);
+  const cover = project.coverImage || svgPlaceholder(project.slug, project.label, 1200, 500);
   const s = project.sections || {};
 
   return (
@@ -48,7 +49,7 @@ function ProjectDetailScreen() {
           <div className="detail-meta-row" style={{ marginTop: "18px" }}>
             <StatusBadge status={project.status} />
             <span className="date">
-              {project.dateStarted || "—"} → {project.dateCompleted || (project.status === "completed" ? "—" : "ongoing")}
+              {project.dateStarted || "—"} → {project.dateCompleted || "ongoing"}
             </span>
           </div>
           <h1>{project.title}</h1>
@@ -69,6 +70,10 @@ function ProjectDetailScreen() {
               <MarkdownContent markdown={project.goal} />
             </DetailSection>
 
+            <DetailSection title="Milestones" show={!!(s.milestones && s.milestones.length)}>
+              <MarkdownContent markdown={(s.milestones || []).map((m) => `- ${m}`).join("\n")} />
+            </DetailSection>
+
             <DetailSection title="Background" show={!!s.background}>
               <MarkdownContent markdown={s.background} />
             </DetailSection>
@@ -81,7 +86,7 @@ function ProjectDetailScreen() {
               <ul className="decision-log">
                 {(s.decisionLog || []).map((entry, i) => (
                   <li key={i}>
-                    <span className="log-date">{entry.date}</span>
+                    {entry.date && <span className="log-date">{entry.date}</span>}
                     <p><strong>Decision:</strong> {entry.decision}</p>
                     <p><strong>Reason:</strong> {entry.reason}</p>
                   </li>
@@ -93,7 +98,7 @@ function ProjectDetailScreen() {
               <ul className="dev-log">
                 {(s.developmentLog || []).map((entry, i) => (
                   <li key={i}>
-                    <span className="log-date">{entry.date}</span>
+                    {entry.date && <span className="log-date">{entry.date}</span>}
                     <p>{entry.update}</p>
                   </li>
                 ))}
@@ -120,8 +125,8 @@ function ProjectDetailScreen() {
               <MarkdownContent markdown={s.lessonsLearned} />
             </DetailSection>
 
-            <DetailSection title="Future Improvements" show={!!s.futureImprovements}>
-              <MarkdownContent markdown={s.futureImprovements} />
+            <DetailSection title="Roadmap" show={!!(s.roadmap && s.roadmap.length)}>
+              <MarkdownContent markdown={(s.roadmap || []).map((r) => `- [ ] ${r}`).join("\n")} />
             </DetailSection>
 
             <DetailSection title="Version History" show={!!(s.versionHistory && s.versionHistory.length)}>
@@ -145,6 +150,9 @@ function ProjectDetailScreen() {
           <aside className="detail-sidebar">
             <h4>Status</h4>
             <p style={{ marginBottom: "18px" }}><StatusBadge status={project.status} /></p>
+
+            <h4>Version</h4>
+            <p style={{ marginBottom: "18px" }}>{project.version || "—"}</p>
 
             <h4>Date Started</h4>
             <p style={{ marginBottom: "18px" }}>{project.dateStarted || "—"}</p>
@@ -178,12 +186,14 @@ function ProjectDetailScreen() {
                 : "—"}
             </p>
 
-            <h4>Live Demo</h4>
-            <p>
-              {project.liveDemoLink
-                ? <a href={project.liveDemoLink} target="_blank" rel="noopener noreferrer">View demo →</a>
-                : "—"}
-            </p>
+            {project.projectPageLink && (
+              <>
+                <h4>Project Page</h4>
+                <p>
+                  <a href={project.projectPageLink} target="_blank" rel="noopener noreferrer">View project page →</a>
+                </p>
+              </>
+            )}
           </aside>
         </div>
       </div>

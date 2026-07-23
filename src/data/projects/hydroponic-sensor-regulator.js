@@ -1,90 +1,129 @@
 /* ==========================================================================
-   COMPLETED — Senior Design project.
+   RESEARCH — Senior Design capstone (ECE Senior Design, Team 2631) is
+   complete; continuing on as a home research project.
+   Sourced from the team's final project report.
    ========================================================================== */
 
 export const project = {
   slug: "hydroponic-sensor-regulator",
-  title: "Automated Hydroponic Sensor and Regulator",
+  title: "Automated Hydroponic Sensor and Regulator System",
   label: "HYDRO",
-  status: "completed",
+  status: "research",
   featured: true,
+  version: "v1.0",
+  coverImage: "/projects/hydroponic-sensor-regulator/lettuce-net-pot.jpg",
 
   shortDescription:
-    "Senior Design project that automated monitoring and regulation of hydroponic nutrient levels using sensors and dosing systems.",
-  tags: ["Embedded Systems", "Hardware", "Senior Design"],
-  technologies: ["Embedded C", "Sensors", "Pumps", "PCB", "Microcontrollers"],
+    "Senior Design capstone (Team 2631) that closed the loop on hydroponic nutrient management — an Arduino Mega reads pH/EC/temperature/humidity and drives dosing pumps automatically, with a Raspberry Pi + Node-RED dashboard for remote monitoring and a live camera feed.",
+  tags: ["Embedded Systems", "Hardware", "IoT", "Senior Design"],
+  technologies: [
+    "Embedded C",
+    "Arduino Mega",
+    "Raspberry Pi",
+    "Node-RED",
+    "Atlas Scientific EZO Sensors",
+    "Peristaltic Pumps",
+  ],
   difficulty: "Advanced",
-  dateStarted: "2025-09-02",
-  dateCompleted: "2026-05-08",
+  dateStarted: "2025-06-08",
+  dateCompleted: "2026-05-10",
   timeInvested: "~250 hours",
-  repoLink: "", // add your senior design repo link here
+  repoLink: "https://github.com/joe50115/SD-AutoHydroponics",
   liveDemoLink: null,
-  updatedAt: "2026-05-08",
+  projectPageLink: "https://seniordesignday.engr.uconn.edu/seniorprojectpt/senior-design-2026-electrical-and-computer-engineering-team-31/",
+  updatedAt: "2026-07-22",
 
   whatILearned:
-    "Closed-loop control gets a lot harder once you're dosing a real chemical system instead of blinking an LED — sensor noise and dosing lag both have to be designed around.",
+    "Closed-loop control on a real chemical system is a lot less forgiving than blinking an LED. We only built automated correction in one direction for EC (Base A/B raise it, nothing lowers it), and that single gap dragged our EC accuracy down from 97.87% (pH, bidirectional) to 86.65%. Next time I'd treat 'can this go too high AND too low' as a hard requirement from day one, not an add-on.",
+
   goal:
-    "Build a system that continuously monitors a hydroponic reservoir's nutrient concentration (EC) and pH, then automatically doses nutrient solution and pH adjuster to keep both in range without manual testing.",
+    "Design and implement a fully automated hydroponic monitoring and control system that continuously tracks pH, electrical conductivity (EC), water temperature, air temperature, and humidity; automatically adjusts solution chemistry via peristaltic pump dosing; provides a real-time remote monitoring dashboard over the local network (with a live camera feed and manual override); and operates reliably with minimal manual intervention.",
 
   sections: {
     overview:
-      "A microcontroller-based unit that reads EC and pH probes submerged in a hydroponic reservoir, compares the readings against target ranges, and drives peristaltic pumps to dose nutrient solution or pH up/down as needed. Custom PCB carries the sensor analog front-end, pump drivers, and microcontroller.",
+      "A Nutrient Film Technique (NFT) hydroponic system with closed-loop automation layered on top. Atlas Scientific EZO-pH and EZO-EC probes (UART) plus an I²C air temp/humidity sensor and an analog water-temperature probe feed an Arduino Mega, which runs the control loop and drives four peristaltic pumps (pH-up, pH-down, Base A, Base B) via PWM along with a relay-controlled grow light. A Raspberry Pi connects to the Arduino over USB serial and to a webcam, and hosts a Node-RED dashboard for live sensor graphs, manual dosing overrides, plant-profile selection, and the camera feed — all accessible from any device on the local network.",
 
     background:
-      "Manually testing and dosing a hydroponic system every day doesn't scale, and nutrient swings outside the target range directly hurt plant growth. This was our Senior Design capstone project — the goal was a self-contained unit that could run unattended for days at a time.",
+      "This started as a personal project, not a class assignment: in June 2025 I built a manual (non-automated) NFT hydroponic system on my own, just to grow something and see how it worked. Running it by hand made the core problem obvious fast — in an NFT system there's no soil to buffer chemistry, so the nutrient solution is the plant's only mineral source, and pH/EC can drift a full unit within hours as roots absorb ions unevenly, CO2 exchange shifts the carbonate balance, and evaporation concentrates the solution. Manually checking pH and EC one to three times a day doesn't scale and is easy to get wrong, and uncorrected drift causes nutrient lockout and stunted growth. Once I'd felt that pain firsthand, I emailed my professor in July 2025 proposing to turn it into an automated closed-loop system for Senior Design. The project was also directly inspired by GREENBOX, a research-scale automated hydroponic 'plant factory' built at UConn by Professor Xiusheng (Harrison) Yang — but no low-cost, closed-loop solution existed yet for small-scale growers running a simple NFT setup, which is the gap this project targeted.",
 
     planningAndDesign:
-      "Split the system into three blocks: sensing (EC/pH probes + analog conditioning), decision logic (microcontroller reading sensors on an interval and applying a control loop with dosing cooldowns), and actuation (peristaltic pumps for nutrient A/B and pH adjuster). Deliberately added a minimum-interval lockout between doses so the system couldn't overshoot by dosing faster than the solution could actually mix and re-stabilize.",
+      "Split the system into three subsystems — sensing, control, and user interface — communicating in a closed loop. The Arduino Mega runs a state-machine control loop every five minutes: read all sensors, check whether the minimum dosing interval has elapsed (abort and just log if not), evaluate pH against the active plant profile and dose pH-up/down if out of range, evaluate EC and dose Base A + Base B if it's low, then log the reading and transmit it as a JSON packet to the Raspberry Pi over USB serial. A post-dosing mixing delay is enforced between cycles so the reservoir can homogenize before the next reading — deliberately trading responsiveness for stability so the controller doesn't fight its own lag.",
+
+    milestones: [
+      "Built manual NFT hydroponic system",
+      "Automated pH/EC dosing with peristaltic pumps",
+      "Built Node-RED dashboard with live camera feed",
+      "Completed 4-day validation test (97.87% pH / 86.65% EC accuracy)",
+      "Presented at UConn Senior Design Day",
+    ],
 
     decisionLog: [
       {
-        date: "2025-09-20",
-        decision: "Designed a custom PCB instead of prototyping permanently on a breadboard.",
+        decision: "Built the control electronics on a breadboard with Atlas Scientific carrier boards rather than designing a custom PCB.",
         reason:
-          "The unit needed to survive next to a reservoir of water and nutrient solution for months — a breadboard wasn't durable or reliable enough for a deployed system.",
+          "Kept iteration fast for a single semester-long build — swapping sensor carrier boards and rewiring the Arduino Mega during development mattered more than long-term durability for a proof-of-concept unit.",
       },
       {
-        date: "2025-11-03",
-        decision: "Added a dosing cooldown timer instead of dosing continuously until the target was hit.",
+        decision: "Automated EC correction in one direction only (Base A + Base B to raise EC), with no automated dilution/flush to lower it.",
         reason:
-          "Nutrient solution takes time to mix through the reservoir. Dosing on every reading before the last dose had even taken effect caused overshoot in early testing.",
+          "Bringing EC down safely needs a drain or dilution mechanism, which was out of scope for the initial build. Flagged explicitly as the primary driver of lower EC accuracy and the top item on the Roadmap.",
+      },
+      {
+        decision: "Tuned the sense-dose-mix loop to a 5-minute interval, set empirically rather than analytically.",
+        reason:
+          "Too short an interval caused overcorrection oscillations in early testing; too long reduced responsiveness to real drift. Five minutes was the empirical sweet spot.",
+      },
+      {
+        decision: "Framed all Arduino↔Raspberry Pi communication as JSON packets over a single USB serial link, with a checksum/retry mechanism.",
+        reason:
+          "One serial connection had to carry sensor readings, dosing status, light control commands and responses, and plant-profile updates without the message types colliding or getting misparsed.",
       },
     ],
 
     developmentLog: [
-      { date: "2025-09-02", update: "Kicked off the project — defined requirements and picked EC/pH sensor modules." },
-      { date: "2025-10-05", update: "Analog front-end for the probes built and validated against a calibration solution." },
-      { date: "2025-12-01", update: "First PCB revision assembled; microcontroller reading both sensors reliably." },
-      { date: "2026-02-14", update: "Pump driver circuit integrated; first automated dosing cycle completed end-to-end." },
-      { date: "2026-04-01", update: "Fixed overshoot by adding the dosing cooldown timer (see Decision Log)." },
-      { date: "2026-05-08", update: "Final integration, enclosure, and Senior Design presentation." },
+      { date: "2025-06-08", update: "Built a manual (non-automated) NFT hydroponic system on my own, outside of any class — the starting point for everything that followed." },
+      { date: "2025-07-22", update: "Emailed my professor proposing to automate the manual system as my Senior Design capstone project." },
+      { update: "Senior Design kickoff with the assigned team — defined requirements and selected the Atlas Scientific EZO-pH/EZO-EC sensors for the automated build." },
+      { update: "Sensor integration validated: EZO-pH/EC over UART, HTU21D-F air temp/humidity over I2C, and analog water-temp probe all reading reliably into the Arduino Mega." },
+      { update: "Pump driver and relay switching validated; PWM-driven peristaltic pump actuation calibrated to known dosing volumes." },
+      { update: "First end-to-end automated dosing cycle completed; overshoot observed when dosing before the solution had fully mixed." },
+      { update: "Added the mixing/cooldown delay between dosing cycles (see Decision Log) and finished staged integration: Arduino↔sensors, Arduino↔pumps, Arduino↔Pi, Pi↔Node-RED." },
+      { update: "Node-RED dashboard finished: live sensor graphs, plant-profile selection, manual dosing overrides, and the webcam feed." },
+      { date: "2026-04-20", update: "Started the four-day continuous validation test growing lettuce." },
+      { date: "2026-04-24", update: "Validation test complete: 97.87% pH regulation accuracy, 86.65% EC regulation accuracy, ~1.5 hour stabilization time." },
+      { date: "2026-05-10", update: "Final assembly, Senior Design presentation, and report submission." },
     ],
 
     problemsEncountered:
-      "Early on, the system would over-dose: it read EC/pH again before the last dose had fully mixed into the reservoir, saw the target still unmet, and dosed again — repeatedly overshooting past the target range.",
+      "Early automated dosing cycles overshot: the system re-read pH/EC before the previous dose had fully mixed into the reservoir, saw the target still unmet, and dosed again — compounding into oscillation past the target range. Separately, EC could only be corrected upward (via Base A/B), so once EC rose above target there was no automated way to bring it back down, which became the main limitation validated in testing. The Arduino-to-Pi USB serial link also had to reliably carry several distinct message types (sensor data, dosing events, light control, plant profiles) without collisions or dropped frames.",
 
     solutions:
-      "Added a minimum-interval lockout between doses long enough for the reservoir to mix and the probes to reflect the true post-dose reading, which eliminated the overshoot.",
+      "Added a minimum-interval mixing/cooldown lockout between dosing cycles (tuned empirically to 5 minutes) so the reservoir could stabilize and the probes could reflect the true post-dose reading before the next correction — this eliminated the pH overcorrection oscillation. For the serial link, structured every message as a JSON packet with a checksum/retry mechanism so the Raspberry Pi could reliably identify and route each message type. The EC-reduction gap itself was accepted as a known limitation for this iteration rather than solved, and carried forward into the Roadmap.",
 
     gallery: [
-      { type: "image", seed: "hydro-1", caption: "Custom PCB with EC/pH analog front-end and pump drivers" },
-      { type: "image", seed: "hydro-2", caption: "Full system deployed next to the reservoir" },
-      { type: "image", seed: "hydro-3", caption: "Dosing cycle test — EC trending back toward target range" },
+      { type: "video", src: "/projects/hydroponic-sensor-regulator/presentation.mp4", caption: "Senior Design presentation video" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/nft-channel-assembly.jpg", caption: "NFT channel assembly — plants growing directly in the sloped, nutrient-film channels" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/electronics-wiring.jpg", caption: "Arduino Mega with Atlas Scientific EZO-pH/EC carrier boards, RTD temperature probe, and HTU21D-F humidity sensor" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/pump-array.jpg", caption: "Peristaltic pump array dosing pH-up, pH-down, Base A, and Base B from reservoir bottles" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/lettuce-net-pot.jpg", caption: "Lettuce grown in the system, roots exposed in its net pot" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/hardware-wiring-diagram.jpg", caption: "Hardware wiring diagram — Raspberry Pi, Arduino Mega, sensors, pumps, and grow light" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/node-red-dashboard.jpg", caption: "Node-RED monitoring dashboard — live sensor graphs, plant profile, light control, and camera feed" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/ph-test-chart.jpg", caption: "pH over the four-day lettuce validation run, with dosing events marked" },
+      { type: "image", src: "/projects/hydroponic-sensor-regulator/ec-test-chart.jpg", caption: "EC over the four-day lettuce validation run — the upward-only drift after stabilization reflects the lack of automated EC reduction" },
     ],
 
     finalResult:
-      "A self-contained unit that kept a hydroponic reservoir's EC and pH within target range for multi-day unattended runs, dosing nutrient solution and pH adjuster automatically based on live sensor readings.",
+      "Over a four-day continuous validation test growing lettuce, the system achieved 97.87% pH regulation accuracy and 86.65% EC regulation accuracy, with a solution stabilization time of approximately 1.5 hours after initial fill or a major disturbance. No significant sensor drift was observed post-calibration. Total system cost was $1,320.",
 
     lessonsLearned:
-      "Control loops on real chemical/physical systems need to account for lag between an action and its effect being measurable — dosing immediately based on the latest reading isn't the same as dosing correctly. I'll default to adding settle/cooldown time to any control loop acting on a slow-to-change physical quantity going forward.",
+      "Control loops acting on a slow-to-change physical/chemical quantity need settle time built in from the start — dosing on the very latest reading, before the last dose has had time to take effect, causes overshoot rather than correction. Just as importantly, a closed-loop controller is only as good as its weakest correction path: building bidirectional control for pH but only one-directional control for EC meant the EC accuracy result (86.65%) was capped by a design gap, not sensor or algorithm noise. I'd scope 'raise and lower' as a single requirement next time, not two separate features.",
 
-    futureImprovements:
-      "Add data logging so nutrient trends can be reviewed over weeks, not just the live reading. Also want a small display/notification path so I don't need to check the microcontroller directly to see system status.",
-
-    versionHistory: [
-      { version: "v0.1", date: "2025-12-01", notes: "First PCB revision, sensors reading reliably, no dosing yet." },
-      { version: "v0.5", date: "2026-02-14", notes: "Automated dosing working, overshoot bug present." },
-      { version: "v1.0", date: "2026-05-08", notes: "Dosing cooldown fixed, final enclosure, presented for Senior Design." },
+    roadmap: [
+      "Automated EC reduction via a dilution or partial-flush mechanism",
+      "Leak detection with capacitive/resistive moisture sensors at plumbing junctions",
+      "Watchdog/anomaly-detection logic for implausible or disconnected sensor readings",
+      "AI-based plant health tracking (leaf color, size, wilting) via computer vision on the existing camera feed",
+      "Water-level sensor with a network-accessible emergency shutoff",
     ],
   },
 };

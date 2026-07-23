@@ -58,8 +58,8 @@ function ArchiveScreen() {
           <span className="eyebrow">Everything, searchable</span>
           <h1>Project Archive</h1>
           <p className="lede">
-            Every project, big or small, finished or not. Search by name, filter by tag
-            or status.
+            Every project, big or small, at whatever stage it's at. Search by name,
+            filter by tag or status.
           </p>
         </div>
       </header>

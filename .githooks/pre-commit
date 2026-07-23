@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Auto-bumps `updatedAt` to today's date in any staged project data file.
+# This is what powers the "Last Updated" stat on the homepage dashboard —
+# see src/utils/dashboard.js. Install once per clone with:
+#   git config core.hooksPath .githooks
+
+files=$(git diff --cached --name-only --diff-filter=ACM -- 'src/data/projects/*.js' | grep -v 'src/data/projects/index.js')
+
+if [ -z "$files" ]; then
+  exit 0
+fi
+
+today=$(date +%Y-%m-%d)
+
+for f in $files; do
+  if grep -q 'updatedAt:' "$f"; then
+    sed -i "s/updatedAt: \"[^\"]*\"/updatedAt: \"$today\"/" "$f"
+    git add "$f"
+  fi
+done

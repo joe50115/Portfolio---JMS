@@ -3,21 +3,21 @@ import { svgPlaceholder } from "../utils/placeholder.js";
 import StatusBadge from "./StatusBadge.jsx";
 import TagPill from "./TagPill.jsx";
 
-// One card, used on Home, the status pages (Projects/In Progress/Future
-// Ideas), and Archive. What extra info shows under the summary depends on
-// the project's status:
-//   completed   -> date completed
-//   in-progress -> progress bar + goal
-//   planned     -> possible technologies
+// One card, used on Home, Projects, and Archive. Every project — regardless
+// of status — shows the same fact block (version, started, last updated,
+// next goal off the roadmap), since projects here don't have a "finished"
+// state that needs different treatment; they're just at different points
+// in an ongoing life cycle.
 //
 // The image and title link straight to the project's detail page; the rest
 // of the card (badge, summary, expandable details) sits outside that link
 // so the GitHub/Live Demo/Development Log buttons inside the <details> stay
 // valid, clickable interactive elements instead of nested anchors.
 function ProjectCard({ project }) {
-  const cover = svgPlaceholder(project.slug, project.label);
-  const techList = project.status === "planned" ? project.possibleTechnologies : project.technologies;
+  const cover = project.coverImage || svgPlaceholder(project.slug, project.label);
+  const techList = project.status === "concept" ? project.possibleTechnologies : project.technologies;
   const detailPath = `/archive/${project.slug}`;
+  const nextGoal = project.sections?.roadmap?.[0];
   const hasExpandContent =
     (techList && techList.length > 0) || project.whatILearned || project.repoLink || project.liveDemoLink;
 
@@ -35,27 +35,10 @@ function ProjectCard({ project }) {
         <StatusBadge status={project.status} />
         <p className="summary">{project.shortDescription}</p>
 
-        {project.status === "completed" && project.dateCompleted && (
-          <div className="card-fact">Completed: {project.dateCompleted}</div>
-        )}
-
-        {project.status === "in-progress" && (
-          <div className="card-progress">
-            {typeof project.progress === "number" && (
-              <>
-                <div className="progress-track">
-                  <div className="progress-fill" style={{ width: `${project.progress}%` }} />
-                </div>
-                <span className="progress-label">{project.progress}% complete</span>
-              </>
-            )}
-            {project.goal && <div className="card-fact">Goal: {project.goal}</div>}
-          </div>
-        )}
-
-        {project.status === "planned" && project.goal && (
-          <div className="card-fact">Goal: {project.goal}</div>
-        )}
+        <div className="card-fact">Version: {project.version || "—"}</div>
+        <div className="card-fact">Started: {project.dateStarted || "—"}</div>
+        <div className="card-fact">Updated: {project.updatedAt || "—"}</div>
+        {nextGoal && <div className="card-fact">Next: {nextGoal}</div>}
 
         {hasExpandContent && (
           <details className="card-expand">

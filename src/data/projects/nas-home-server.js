@@ -1,40 +1,48 @@
 /* ==========================================================================
-   COMPLETED
+   ACTIVE DEVELOPMENT — operational, still growing.
    ========================================================================== */
 
 export const project = {
   slug: "nas-home-server",
   title: "NAS Home Server",
   label: "NAS",
-  status: "completed",
+  status: "active-development",
   featured: true,
+  version: "v1.3",
 
   shortDescription:
-    "Built a private NAS using OpenMediaVault with automated BorgBackup backups, SMB shares, and Linux administration.",
+    "A private NAS built on OpenMediaVault with automated BorgBackup backups and SMB shares — operational, and continuously expanding with new services (Plex, Docker, Home Assistant, and more).",
   tags: ["Linux", "Homelab", "Networking"],
   technologies: ["Linux", "OpenMediaVault", "BorgBackup", "SMB", "SSH"],
   difficulty: "Intermediate",
   dateStarted: "2026-03-01",
-  dateCompleted: "2026-04-12",
-  timeInvested: "~35 hours",
+  dateCompleted: null,
+  timeInvested: "~35 hours so far",
   repoLink: "", // add a link to your OMV/Borg config repo, if you have one
   liveDemoLink: null,
-  updatedAt: "2026-04-12",
+  updatedAt: "2026-07-22",
 
   whatILearned:
     "Automated, versioned backups (BorgBackup) are worth setting up before you actually need them — restoring from a scheduled snapshot is a very different experience than realizing you never had one.",
   goal:
-    "Move personal file storage and backups off of cloud services and onto self-hosted hardware I fully control, with automated backups instead of manual copies.",
+    "Move personal file storage and backups off of cloud services and onto self-hosted hardware I fully control, with automated backups instead of manual copies — then keep expanding what that hardware runs.",
 
   sections: {
     overview:
-      "A dedicated machine running OpenMediaVault, exposing SMB shares to every device on the network, with BorgBackup running on a schedule to take deduplicated, encrypted backups of the important shares to a separate disk.",
+      "A dedicated machine running OpenMediaVault, exposing SMB shares to every device on the network, with BorgBackup running on a schedule to take deduplicated, encrypted backups of the important shares to a separate disk. The base NAS is done and operational — it's now the foundation I keep building new self-hosted services on top of.",
 
     background:
       "Was relying on a mix of cloud storage and manual USB drive copies, which meant no consistent backup schedule and recurring subscription costs for storage I could host myself.",
 
     planningAndDesign:
       "Chose OpenMediaVault over a bare Samba/Linux setup for the web UI around share and user management, since this needed to stay maintainable without re-learning the CLI config every time. Backups run as a separate BorgBackup job rather than relying on RAID alone — RAID protects against a drive failure, not against deleting or overwriting a file by mistake.",
+
+    milestones: [
+      "Built server",
+      "Installed OpenMediaVault",
+      "Configured SMB",
+      "Automated Borg backups",
+    ],
 
     decisionLog: [
       {
@@ -64,12 +72,27 @@ export const project = {
     ],
 
     finalResult:
-      "A NAS reachable from every device on the network over SMB, with nightly encrypted, deduplicated backups to a second disk and a confirmed working restore path.",
+      "A NAS reachable from every device on the network over SMB, with nightly encrypted, deduplicated backups to a second disk and a confirmed working restore path — the stable foundation for everything on the roadmap below.",
 
     lessonsLearned:
       "A backup you haven't test-restored isn't a verified backup — running the restore once, deliberately, before actually needing it, is what turned this from 'probably fine' into something I trust.",
 
-    futureImprovements:
-      "Add an off-site backup copy (even just an encrypted archive shipped to cold storage periodically) so the setup survives more than a single-location failure like a fire or theft.",
+    roadmap: [
+      "Plex Media Server",
+      "Minecraft Server",
+      "Portfolio website hosting",
+      "Docker",
+      "Reverse proxy",
+      "Home Assistant",
+      "Monitoring dashboard",
+      "Off-site/cold-storage backup copy for disaster recovery",
+    ],
+
+    versionHistory: [
+      { version: "v1.0", date: "2026-03-01", notes: "Initial OpenMediaVault install and base storage pool." },
+      { version: "v1.1", date: "2026-03-10", notes: "SMB shares and per-user permissions configured." },
+      { version: "v1.2", date: "2026-03-22", notes: "Automated BorgBackup nightly cron job added." },
+      { version: "v1.3", date: "2026-04-12", notes: "Full restore tested from a Borg snapshot — confirmed backups actually work." },
+    ],
   },
 };

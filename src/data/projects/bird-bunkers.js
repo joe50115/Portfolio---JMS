@@ -1,5 +1,5 @@
 /* ==========================================================================
-   IN PROGRESS
+   ACTIVE DEVELOPMENT
    Gallery uses generated placeholder artwork until real screenshots/concept
    art exist — swap the `seed` items for `src` once you have real images.
    ========================================================================== */
@@ -8,8 +8,9 @@ export const project = {
   slug: "bird-bunkers",
   title: "Bird Bunkers",
   label: "BIRD",
-  status: "in-progress",
+  status: "active-development",
   featured: true,
+  version: "v0.2",
 
   shortDescription:
     "A multiplayer bird-themed bunker survival game where players build defenses, survive waves of enemies, and collect unique birds with different abilities.",
@@ -21,9 +22,8 @@ export const project = {
   timeInvested: "~30 hours so far",
   repoLink: "", // add your repo link here
   liveDemoLink: null,
-  updatedAt: "2026-06-25",
+  updatedAt: "2026-07-22",
 
-  progress: 20,
   whatILearned:
     "Networking a game from the start (even a rough prototype) surfaces sync/authority questions way earlier than bolting multiplayer on after the singleplayer version already works.",
   goal:
@@ -39,6 +39,11 @@ export const project = {
     planningAndDesign:
       "Core loop first: build phase → wave → build phase, on a single map, before any bird abilities or networking. Multiplayer is being built with a client-server model from the start rather than retrofitted later.",
 
+    milestones: [
+      "Prototyped the build-phase/wave-phase core loop in singleplayer",
+      "Added basic enemy AI and the first wave-spawning system",
+    ],
+
     developmentLog: [
       { date: "2026-05-01", update: "Prototyped the build-phase/wave-phase core loop in singleplayer." },
       { date: "2026-05-20", update: "Added basic enemy AI and the first wave-spawning system." },
@@ -50,7 +55,10 @@ export const project = {
       { type: "image", seed: "bird-2", caption: "Placeholder concept art — enemy wave" },
     ],
 
-    futureImprovements:
-      "First bird abilities, a proper enemy variety pass, and matchmaking/lobby flow once the core networking is solid.",
+    roadmap: [
+      "First bird abilities",
+      "A proper enemy variety pass",
+      "Matchmaking/lobby flow once the core networking is solid",
+    ],
   },
 };

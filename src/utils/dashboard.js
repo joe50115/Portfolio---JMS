@@ -7,17 +7,17 @@
 
 export function getStatusCounts(projects) {
   return {
-    completed: projects.filter((p) => p.status === "completed").length,
-    inProgress: projects.filter((p) => p.status === "in-progress").length,
-    planned: projects.filter((p) => p.status === "planned").length,
+    activeDevelopment: projects.filter((p) => p.status === "active-development").length,
+    stable: projects.filter((p) => p.status === "stable").length,
+    concept: projects.filter((p) => p.status === "concept").length,
   };
 }
 
-// The in-progress project that was touched most recently.
+// The active-development project that was touched most recently.
 export function getCurrentFocus(projects) {
-  const inProgress = projects.filter((p) => p.status === "in-progress");
-  if (inProgress.length === 0) return null;
-  return [...inProgress].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))[0];
+  const activeDevelopment = projects.filter((p) => p.status === "active-development");
+  if (activeDevelopment.length === 0) return null;
+  return [...activeDevelopment].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))[0];
 }
 
 // The single most recently updated project, regardless of status.

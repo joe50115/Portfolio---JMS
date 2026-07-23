@@ -1,13 +1,14 @@
 /* ==========================================================================
-   IN PROGRESS
+   ACTIVE DEVELOPMENT
    ========================================================================== */
 
 export const project = {
   slug: "movie-tracker",
   title: "Movie Tracking App",
   label: "MOVIE",
-  status: "in-progress",
+  status: "active-development",
   featured: true,
+  version: "v0.4",
 
   shortDescription:
     "A personal movie tracking application for discovering, rating, organizing, and reviewing movies.",
@@ -19,9 +20,8 @@ export const project = {
   timeInvested: "~50 hours so far",
   repoLink: "", // add your repo link here
   liveDemoLink: null,
-  updatedAt: "2026-07-05",
+  updatedAt: "2026-07-22",
 
-  progress: 40,
   whatILearned:
     "Modeling a many-to-many relationship (users, movies, tags, ratings) cleanly up front saves a lot of migration pain once the feature list starts growing.",
   goal:
@@ -36,6 +36,12 @@ export const project = {
 
     planningAndDesign:
       "Started with the core loop — search a movie, log it, rate it — before touching any of the bigger features like recommendations or social sharing. Data model: users, movies (cached from a public movie API), ratings, and custom collections as a join table.",
+
+    milestones: [
+      "Set up the project and the movie/rating/user schema",
+      "Built movie search and logging a watched movie with a rating",
+      "Added custom collections for grouping movies beyond a watch list",
+    ],
 
     developmentLog: [
       { date: "2026-04-15", update: "Set up the project and the movie/rating/user schema." },
@@ -54,7 +60,12 @@ export const project = {
       { type: "image", seed: "movie-1", caption: "Movie search and logging flow, current in-progress styling" },
     ],
 
-    futureImprovements:
-      "Watchlists, recommendations based on watch history, statistics (genres/years/ratings breakdowns), custom collections beyond the basic version already in, and social features (following friends, seeing what they've watched).",
+    roadmap: [
+      "Watchlists",
+      "Recommendations based on watch history",
+      "Statistics (genres/years/ratings breakdowns)",
+      "Custom collections beyond the basic version already in",
+      "Social features (following friends, seeing what they've watched)",
+    ],
   },
 };

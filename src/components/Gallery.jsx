@@ -11,8 +11,10 @@ function Gallery({ label, items }) {
 
   if (!items || items.length === 0) return null;
 
+  const videos = items.filter((item) => item.type === "video");
+  const images = items.filter((item) => item.type !== "video");
+
   function openLightbox(item) {
-    if (item.type === "video") return; // videos play inline, no lightbox
     setOpenSrc(item.src || svgPlaceholder(item.seed, label, 1600, 900));
     setOpenAlt(item.caption);
   }
@@ -23,19 +25,22 @@ function Gallery({ label, items }) {
 
   return (
     <>
+      {videos.map((item, i) => (
+        <figure className="gallery-video" key={item.src || i}>
+          <video src={item.src} controls preload="metadata" />
+          <figcaption>{item.caption}</figcaption>
+        </figure>
+      ))}
+
       <div className="gallery-grid">
-        {items.map((item, i) => (
+        {images.map((item, i) => (
           <figure className="gallery-item" key={item.seed || item.src || i}>
-            {item.type === "video" ? (
-              <video src={item.src} controls preload="metadata" />
-            ) : (
-              <img
-                src={item.src || svgPlaceholder(item.seed, label)}
-                alt={item.caption}
-                loading="lazy"
-                onClick={() => openLightbox(item)}
-              />
-            )}
+            <img
+              src={item.src || svgPlaceholder(item.seed, label)}
+              alt={item.caption}
+              loading="lazy"
+              onClick={() => openLightbox(item)}
+            />
             <figcaption>{item.caption}</figcaption>
           </figure>
         ))}

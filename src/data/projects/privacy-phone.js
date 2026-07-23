@@ -1,12 +1,12 @@
 /* ==========================================================================
-   FUTURE IDEA — not started yet.
+   CONCEPT — not started yet.
    ========================================================================== */
 
 export const project = {
   slug: "privacy-phone",
   title: "Privacy Phone",
   label: "PRIV",
-  status: "planned",
+  status: "concept",
   featured: false,
 
   shortDescription:
@@ -20,7 +20,7 @@ export const project = {
   timeInvested: null,
   repoLink: "",
   liveDemoLink: null,
-  updatedAt: "2026-07-10",
+  updatedAt: "2026-07-22",
 
   goal:
     "Build a Linux-based phone deliberately limited to calls, texting, navigation, and reading — an E Ink display and physical keyboard by design, with no space for addictive apps.",
@@ -31,5 +31,11 @@ export const project = {
 
     background:
       "Interested in privacy-focused technology and in devices that are useful without being engineered to maximize time spent on them. This is the most hardware-ambitious future idea on the list — combining embedded Linux, custom PCB work, and an E Ink display.",
+
+    roadmap: [
+      "E Ink display + physical keyboard hardware selection",
+      "Embedded Linux bring-up",
+      "Scope the software to calls, texting, navigation, and reading only",
+    ],
   },
 };

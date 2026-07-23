@@ -7,23 +7,23 @@ function DashboardStats({ counts, currentFocus, lastUpdated }) {
   return (
     <div className="dashboard-grid">
       <div className="stat-tile">
-        <span className="stat-label">Projects Completed</span>
-        <span className="stat-value">{counts.completed}</span>
+        <span className="stat-label">Active Development</span>
+        <span className="stat-value">{counts.activeDevelopment}</span>
       </div>
       <div className="stat-tile">
-        <span className="stat-label">Projects In Progress</span>
-        <span className="stat-value">{counts.inProgress}</span>
+        <span className="stat-label">Stable</span>
+        <span className="stat-value">{counts.stable}</span>
       </div>
       <div className="stat-tile">
-        <span className="stat-label">Planned Projects</span>
-        <span className="stat-value">{counts.planned}</span>
+        <span className="stat-label">Concept</span>
+        <span className="stat-value">{counts.concept}</span>
       </div>
       <div className="stat-tile">
         <span className="stat-label">Current Focus</span>
         {currentFocus ? (
           <Link className="stat-value stat-link" to={`/archive/${currentFocus.slug}`}>{currentFocus.title}</Link>
         ) : (
-          <span className="stat-value stat-muted">Nothing in progress</span>
+          <span className="stat-value stat-muted">Nothing in active development</span>
         )}
       </div>
       <div className="stat-tile">
